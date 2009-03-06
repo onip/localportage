@@ -1,0 +1,11 @@
+--- CMakeLists.txt	2008-05-12 10:32:26.000000000 +0200
++++ CMakeLists.txt	2008-05-12 10:40:36.000000000 +0200
+@@ -259,7 +259,7 @@
+ #############################################################################
+ #############################################################################
+ # Dade - default compiler options
+-ADD_DEFINITIONS(-O3 -msse2 -mfpmath=sse -ftree-vectorize -funroll-loops -Wall -DLUX_USE_OPENGL -DHAVE_PTHREAD_H)
++#ADD_DEFINITIONS(-O3 -DLUX_USE_OPENGL -DHAVE_PTHREAD_H)
+ 
+ 
+ #############################################################################

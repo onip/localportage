@@ -1,0 +1,27 @@
+--- nautilus-share-0.7.2.orig/src/Makefile.am	2006-03-26 15:50:44.000000000 +0200
++++ nautilus-share-0.7.2/src/Makefile.am	2008-04-10 22:31:40.000000000 +0200
+@@ -10,8 +10,7 @@
+ 	$(LIBGLADE_CFLAGS)				\
+ 	$(GLIB_CFLAGS)
+ 
+-# FIXME: get this from the .pc file
+-nautilus_extensiondir=$(libdir)/nautilus/extensions-1.0
++nautilus_extensiondir=`pkg-config --variable=extensiondir libnautilus-extension`
+ 
+ nautilus_extension_LTLIBRARIES=libnautilus-share.la
+ 
+diff -uri nautilus-share-0.7.1.orig/src/Makefile.in nautilus-share-0.7.1/src/Makefile.in
+--- nautilus-share-0.7.1.orig/src/Makefile.in	2006-10-21 13:01:17.000000000 +0200
++++ nautilus-share-0.7.1/src/Makefile.in	2008-04-10 22:32:05.000000000 +0200
+@@ -244,9 +244,7 @@
+ 	$(LIBGLADE_CFLAGS)				\
+ 	$(GLIB_CFLAGS)
+ 
+-
+-# FIXME: get this from the .pc file
+-nautilus_extensiondir = $(libdir)/nautilus/extensions-1.0
++nautilus_extensiondir = `pkg-config --variable=extensiondir libnautilus-extension`
+ nautilus_extension_LTLIBRARIES = libnautilus-share.la
+ libnautilus_share_la_SOURCES = \
+ 	nautilus-share.c        \
+

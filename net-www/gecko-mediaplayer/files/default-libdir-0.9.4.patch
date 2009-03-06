@@ -1,0 +1,14 @@
+--- gecko-mediaplayer-0.9.2.orig/configure.in	2008-11-10 09:05:16.000000000 -0700
++++ gecko-mediaplayer-0.9.2/configure.in	2009-01-02 13:48:25.000000000 -0700
+@@ -79,11 +79,8 @@
+ fi
+ 
+ PKG_CHECK_MODULES(NSPR, [nspr],[
+-    libdir=`$PKG_CONFIG --variable=libdir nspr`
+     ],[AC_MSG_WARN([nspr not found, may not be needed])])
+ 
+-AC_SUBST(libdir)
+-
+ AC_SUBST(GECKO_CFLAGS)
+ AC_SUBST(GECKO_LIBS)
+ AC_SUBST(GECKO_HOME)

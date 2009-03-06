@@ -1,0 +1,42 @@
+#!/sbin/runscript
+# Copyright 1999-2004 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+NAME="smbshared"
+DAEMON=/usr/bin/$NAME
+DAEMON_OPTS=
+PIDFILE=/var/run/$NAME.pid
+USER=root
+
+[[ -x $DAEMON ]] || exit 0
+
+depend() {
+	need dbus samba
+}
+
+check_include_line() {
+	if ! grep -q '^[[:space:]]*include[[:space:]]*=[[:space:]]*/etc/samba/smbshared.conf' /etc/samba/smb.conf; then 
+		eerror "Need the line 'include = /etc/samba/smbshared.conf' in the [global] section of"
+		eerror "/etc/samba/smb.conf"
+		exit 1
+	fi
+}
+
+start() {
+	check_include_line
+	[[ -e ${PIDFILE} ]] && rm -f ${PIDFILE}
+	ebegin "Starting nautilus-share daemon"
+	start-stop-daemon --start --quiet \
+		--user $USER --exec $DAEMON -- $DAEMON_OPTS
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping nautilus-share daemon"
+	start-stop-daemon --stop --quiet --pidfile $PIDFILE \
+		 --oknodo --user $USER --exec $DAEMON
+	eend $?
+	[[ -e ${PIDFILE} ]] && rm -f ${PIDFILE}
+}
+
