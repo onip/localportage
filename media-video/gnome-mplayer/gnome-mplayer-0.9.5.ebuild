@@ -15,7 +15,7 @@ SRC_URI="http://${PN}.googlecode.com/files/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="+alsa +gnome ipod +libnotify musicbrainz"
+IUSE="+alsa +gnome nautilus ipod +libnotify musicbrainz"
 
 # glib higher version for gio
 RDEPEND=">=dev-libs/glib-2.16
@@ -25,6 +25,7 @@ RDEPEND=">=dev-libs/glib-2.16
 	alsa? ( media-libs/alsa-lib )
 	gnome? ( gnome-base/gconf:2
 		gnome-base/gvfs )
+	nautilus? ( >=gnome-base/nautilus-2.22 )
 	ipod? ( media-libs/libgpod )
 	libnotify? ( x11-libs/libnotify )
 	musicbrainz? ( net-misc/curl
@@ -37,10 +38,11 @@ DOCS="AUTHORS ChangeLog NEWS README DOCS/keyboard_shortcuts.txt"
 
 pkg_setup() {
 	G2CONF="${G2CONF}
+		--with-gio
 		$(use_with alsa)
 		$(use_with gnome gconf)
-		$(use_with gnome gio)
 		$(use_enable gnome schemas-install)
+		$(use_enable nautilus)
 		$(use_with ipod libgpod)
 		$(use_with libnotify)
 		$(use_with musicbrainz libmusicbrainz3)"

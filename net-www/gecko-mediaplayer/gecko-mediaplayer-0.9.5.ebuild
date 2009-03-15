@@ -28,17 +28,10 @@ DEPEND="${RDEPEND}
 
 G2CONF="
 	$(use_with gnome gconf)
-	$(use !gnome && echo '--disable-schemas-install')"
+	$(use_enable gnome schemas-install)"
 
 DOCS="ChangeLog INSTALL
 	DOCS/tech/javascript.txt"
-
-src_unpack() {
-	gnome2_src_unpack
-
-	epatch "${FILESDIR}"/default-libdir-${PV}.patch
-	eautoreconf || die "eautoreconf failed"
-}
 
 src_install() {
 	gnome2_src_install
@@ -49,8 +42,8 @@ src_install() {
 
 	# move plugins to correct location and clean empty dirs
 	dodir /usr/$(get_libdir)/nsbrowser/plugins
-	mv "${D}"/usr/$(get_libdir)/mozilla/plugins/${PN}* \
+	mv "${D}"/usr/$(get_libdir)/nspr/mozilla/plugins/${PN}* \
 		"${D}"/usr/$(get_libdir)/nsbrowser/plugins || die "mv plugins failed."
-	rmdir -p "${D}"/usr/$(get_libdir)/mozilla/plugins
+	rmdir -p "${D}"/usr/$(get_libdir)/nspr/mozilla/plugins
 }
 
