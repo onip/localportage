@@ -15,4 +15,5 @@ DEPEND=""
 RDEPEND="dev-python/simplejson
 		dev-python/clientform
 		dev-python/pyxml
+		dev-python/suds
 		media-video/rtmpdump"
