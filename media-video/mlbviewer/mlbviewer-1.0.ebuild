@@ -13,4 +13,6 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="dev-python/simplejson
-		dev-python/clientform"
+		dev-python/clientform
+		dev-python/pyxml
+		media-video/rtmpdump"
