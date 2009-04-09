@@ -20,7 +20,8 @@ RDEPEND="${DEPEND}"
 S=${WORKDIR}/${PN}
 
 src_prepare() {
-	epatch "${FILESDIR}/nodebug.patch"
+	#epatch "${FILESDIR}/nodebug.patch"
+	epatch "${FILESDIR}/mlbviewer-rtmpdump.patch"
 }
 
 src_install() {
