@@ -14,7 +14,7 @@ KEYWORDS="~x86 ~amd64"
 IUSE=""
 EAPI="2"
 
-DEPEND="dev-libs/boost"
+DEPEND="dev-libs/openssl"
 RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${PN}
