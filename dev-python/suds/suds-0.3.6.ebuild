@@ -22,4 +22,5 @@ S="${WORKDIR}/python-${P}/"
 
 src_prepare() {
 	epatch "${FILESDIR}/suds-${PV}-python-2.6.patch"
+	epatch "${FILESDIR}/unicode_subclass-python-2.6.patch"
 }

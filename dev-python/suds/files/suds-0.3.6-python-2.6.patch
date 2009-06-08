@@ -1,6 +1,5 @@
-diff -urN suds.old/wsse.py suds/wsse.py
---- suds.old/wsse.py	2009-06-08 18:57:51.000000000 +0200
-+++ suds/wsse.py	2009-06-08 18:58:26.000000000 +0200
+--- suds/wsse.py.old	2009-06-08 21:31:40.000000000 +0200
++++ suds/wsse.py	2009-06-08 21:28:25.000000000 +0200
 @@ -23,7 +23,7 @@
  from suds.sudsobject import Object
  from suds.sax.element import Element
