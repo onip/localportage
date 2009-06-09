@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""
 
-RDEPEND="dev-lang/python:2.5
+RDEPEND=">=dev-lang/python-2.5
 	>=media-libs/libmms-0.4"
 
 DEPEND="${RDEPEND}"
