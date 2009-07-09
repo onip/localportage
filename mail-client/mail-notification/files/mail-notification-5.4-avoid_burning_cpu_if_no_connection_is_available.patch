@@ -1,0 +1,10 @@
+--- src/mn-client-session.c.orig	2009-07-04 19:59:13.000000000 +1200
++++ src/mn-client-session.c	2009-07-04 19:42:06.000000000 +1200
+@@ -415,6 +415,7 @@
+   session.server = server;
+   session.port = port;
+   session.private = private;
++  session.s = -1;
+ 
+   addrinfo = resolve(&session);
+   if (! addrinfo)
