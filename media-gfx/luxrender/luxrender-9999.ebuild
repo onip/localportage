@@ -1,65 +1,62 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit cmake-utils cvs eutils flag-o-matic
+EAPI="2"
+WX_GTK_VER="2.8"
+inherit cmake-utils mercurial flag-o-matic wxwidgets
 
-ECVS_SERVER="cvs.savannah.nongnu.org:/sources/ecume"
-#ECVS_SERVER="offline"
-ECVS_AUTH="pserver"
-ECVS_USER="anonymous"
-ECVS_PASS=""
-ECVS_MODULE="lux"
+EHG_REPO_URI="http://www.luxrender.net/hg/lux"
 
-LICENSE="GPL-3"
-SLOT="0"
-KEYWORDS="~x86 ~amd64"
 DESCRIPTION="A GPL unbiased renderer"
 HOMEPAGE="http://www.luxrender2.org/"
 
-EAPI="2"
+LICENSE="GPL-3"
+SLOT="0"
+KEYWORDS=""
+IUSE="sse2 doc debug"
 
-IUSE="opengl sse2 wxwindows"
+RDEPEND=">=dev-libs/boost-1.37
+	media-libs/openexr
+	media-libs/tiff
+	media-libs/libpng
+	media-libs/jpeg
+	media-libs/ilmbase
+	virtual/opengl
+	x11-libs/wxGTK:2.8[X,opengl,sdl]"
 
-DEPEND="dev-libs/boost
-		media-libs/openexr
-		x11-libs/fltk
-		sys-devel/bison
-		sys-devel/flex
-		media-libs/tiff
-		media-libs/libpng
-		wxwindows? ( x11-libs/wxGTK:2.8[X,opengl,sdl] )"
+DEPEND="${RDEPEND}
+	sys-devel/bison
+	sys-devel/flex
+	doc? ( >=app-doc/doxygen-1.5.7[-nodot] )"
 
-RDEPEND="${DEPEND}"
-
-S=${WORKDIR}/${ECVS_MODULE}
-
-CMAKE_IN_SOURCE_BUILD="true"
-
-src_unpack() {
-	cvs_src_unpack
-}
+S="${WORKDIR}/lux"
 
 src_prepare() {
 	# upstream ships with their own CFLAGS\CXXFLAGS that we need to strip
-	epatch "${FILESDIR}/luxrender-custom-flags.patch"
+	epatch "${FILESDIR}/${PN}-0.6_rc4-flags.patch"
 }
 
-#src_compile() {
 src_configure() {
-	#opengl is used for visualizing rendered image
-	use opengl && append-flags "-DLUX_USE_OPENGL"
-	use sse2 && append-flags "-msse -msse2 -DLUX_USE_SSE"
+	use sse2 && append-flags "-msse2 -DLUX_USE_SSE"
+	use debug && append-flags -ggdb
 
-	local mycmakeargs
-
-	#mycmakeargs="${mycmakeargs} -DCMAKE_VERBOSE_MAKEFILE:BOOL=TRUE"
-	mycmakeargs="${mycmakeargs} -DCMAKE_CXX_FLAGS_RELEASE:STRING="
-	mycmakeargs="${mycmakeargs} -DCMAKE_C_FLAGS_RELEASE:STRING="
-
+	need-wxwidgets unicode
 	cmake-utils_src_configure
 }
 
-src_compile() {
-	cmake-utils_src_compile
+src_install() {
+	cmake-utils_src_install
+	dodoc AUTHORS.txt
+
+	# installing API(s) docs
+	if use doc; then
+		pushd "${S}"/doxygen > /dev/null
+		doxygen doxygen.conf
+		dohtml html/*
+		popd > /dev/null
+	fi
+
+	make_desktop_entry "${PN}" "Lux Render" "/usr/share/pixmaps/luxrender.svg" "Graphics;3DGraphics;"
 }
+
