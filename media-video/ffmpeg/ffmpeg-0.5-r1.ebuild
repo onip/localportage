@@ -1,8 +1,8 @@
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/ffmpeg/ffmpeg-0.5-r1.ebuild,v 1.7 2009/05/12 20:10:41 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/ffmpeg/ffmpeg-0.5-r1.ebuild,v 1.15 2009/07/09 13:43:14 ssuominen Exp $
 
-EAPI=1
+EAPI=2
 
 inherit eutils flag-o-matic multilib toolchain-funcs
 
@@ -13,11 +13,17 @@ SRC_URI="http://ffmpeg.org/releases/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"
 IUSE="+3dnow +3dnowext alsa altivec amr custom-cflags debug dirac doc ieee1394
-	  +encode faac faad gsm ipv6 +mmx +mmxext vorbis test theora threads x264
+	  +encode faac faad gsm ipv6 +mmx +mmxext vdpau vorbis test theora threads x264
 	  xvid network zlib sdl X mp3 oss schroedinger +hardcoded-tables bindist
 	  v4l v4l2 speex +ssse3 vhook jpeg2k"
+
+VIDEO_CARDS="nvidia"
+
+for x in ${VIDEO_CARDS}; do
+	IUSE="${IUSE} video_cards_${x}"
+done
 
 RDEPEND="vhook? ( >=media-libs/imlib2-1.4.0 >=media-libs/freetype-2 )
 	sdl? ( >=media-libs/libsdl-1.2.10 )
@@ -31,7 +37,7 @@ RDEPEND="vhook? ( >=media-libs/imlib2-1.4.0 >=media-libs/freetype-2 )
 			)
 		)
 		vorbis? ( media-libs/libvorbis media-libs/libogg )
-		theora? ( media-libs/libtheora media-libs/libogg )
+		theora? ( media-libs/libtheora[encode] media-libs/libogg )
 		x264? ( >=media-libs/x264-0.0.20081006 )
 		xvid? ( >=media-libs/xvid-1.1.0 ) )
 	faad? ( >=media-libs/faad2-2.6.1 )
@@ -44,7 +50,10 @@ RDEPEND="vhook? ( >=media-libs/imlib2-1.4.0 >=media-libs/freetype-2 )
 	schroedinger? ( media-libs/schroedinger )
 	speex? ( >=media-libs/speex-1.2_beta3 )
 	X? ( x11-libs/libX11 x11-libs/libXext )
-	amr? ( media-libs/amrnb media-libs/amrwb )"
+	amr? ( media-libs/amrnb media-libs/amrwb )
+	video_cards_nvidia? (
+		vdpau? ( >=x11-drivers/nvidia-drivers-180.29 )
+	)"
 
 DEPEND="${RDEPEND}
 	>=sys-devel/make-3.81
@@ -54,11 +63,12 @@ DEPEND="${RDEPEND}
 	v4l? ( sys-kernel/linux-headers )
 	v4l2? ( sys-kernel/linux-headers )"
 
-src_compile() {
-	# mlb fix
+src_prepare() {
 	epatch "${FILESDIR}/mlb.patch"
+}
 
-	local myconf="${EXTRA_ECONF}"
+src_configure() {
+	local myconf="${EXTRA_FFMPEG_CONF}"
 
 	# enabled by default
 	use debug || myconf="${myconf} --disable-debug"
@@ -119,6 +129,11 @@ src_compile() {
 		use amr && myconf="${myconf} --enable-libamr-nb \
 									 --enable-libamr-wb \
 									 --enable-nonfree"
+	fi
+
+	# This has changed since 0.5, please recheck for next version
+	if use video_cards_nvidia; then
+		use vdpau && myconf="${myconf} --enable-vdpau"
 	fi
 
 	# CPU features
@@ -183,7 +198,9 @@ src_compile() {
 		--enable-static --enable-shared \
 		--cc="$(tc-getCC)" \
 		${myconf} || die "configure failed"
+}
 
+src_compile() {
 	emake version.h || die #252269
 	emake || die "make failed"
 }
