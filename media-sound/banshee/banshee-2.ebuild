@@ -82,7 +82,7 @@ RDEPEND=">=dev-lang/mono-2.4.3
 		>=dev-dotnet/webkit-sharp-0.2
 	)
 	youtube? (
-		dev-dotnet/google-data-sharp
+		dev-dotnet/google-gdata-sharp
 	)"
 
 DEPEND="${RDEPEND}
