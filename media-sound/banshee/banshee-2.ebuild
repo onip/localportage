@@ -19,33 +19,34 @@ HOMEPAGE="http://banshee-project.org"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="+aac boo daap doc +encode +flac ipod karma +mad mtp podcast test +vorbis wikipedia youtube"
+IUSE="+aac +cdda boo daap doc +encode ipod karma mtp podcast test wikipedia youtube"
 
 RDEPEND=">=dev-lang/mono-2.4.3
 	gnome-base/gnome-settings-daemon
 	x11-themes/gnome-icon-theme
 	sys-apps/dbus
 	>=dev-dotnet/gtk-sharp-2.12
-	>=dev-dotnet/glade-sharp-2.12
 	>=dev-dotnet/gconf-sharp-2.24.0
-	>=dev-dotnet/gnome-sharp-2.24.0
 	>=dev-dotnet/notify-sharp-0.4.0_pre20080912-r1
 	>=media-libs/gstreamer-0.10.21-r3
+	>=media-libs/gst-plugins-base-0.10.25.2
 	>=media-libs/gst-plugins-bad-${GVER}
 	>=media-libs/gst-plugins-good-${GVER}
 	>=media-libs/gst-plugins-ugly-${GVER}
-	>=media-plugins/gst-plugins-alsa-${GVER}
+	>=media-plugins/gst-plugins-meta-0.10-r2:0.10
 	>=media-plugins/gst-plugins-gnomevfs-${GVER}
 	>=media-plugins/gst-plugins-gconf-${GVER}
-	|| (
-		>=media-plugins/gst-plugins-cdparanoia-${GVER}
-		>=media-plugins/gst-plugins-cdio-${GVER}
+	cdda? (
+		|| (
+			>=media-plugins/gst-plugins-cdparanoia-${GVER}
+			>=media-plugins/gst-plugins-cdio-${GVER}
+		)
 	)
 	media-libs/musicbrainz:1
 	>=dev-dotnet/dbus-glib-sharp-0.4.1
 	>=dev-dotnet/dbus-sharp-0.6.1a
 	>=dev-dotnet/mono-addins-0.4[gtk]
-	>=dev-dotnet/taglib-sharp-2.0.3.5
+	>=dev-dotnet/taglib-sharp-2.0.3.7
 	>=dev-db/sqlite-3.4
 	karma? ( >=media-libs/libkarma-0.1.0-r1 )
 	aac? ( >=media-plugins/gst-plugins-faad-${GVER} )
@@ -62,28 +63,19 @@ RDEPEND=">=dev-lang/mono-2.4.3
 		>=media-plugins/gst-plugins-lame-${GVER}
 		>=media-plugins/gst-plugins-taglib-${GVER}
 	)
-	flac? (
-		>=media-plugins/gst-plugins-flac-${GVER}
-	)
 	ipod? (
 		>=dev-dotnet/ipod-sharp-0.8.5
 	)
-	mad? (
-		>=media-plugins/gst-plugins-mad-${GVER}
-	)
 	mtp? (
 		media-libs/libmtp
-	)
-	vorbis? (
-		>=media-plugins/gst-plugins-ogg-${GVER}
-		>=media-plugins/gst-plugins-vorbis-${GVER}
 	)
 	wikipedia? (
 		>=dev-dotnet/webkit-sharp-0.2
 	)
 	youtube? (
-		dev-dotnet/google-gdata-sharp
+		>=dev-dotnet/google-gdata-sharp-1.4
 	)"
 
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"
+
