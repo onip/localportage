@@ -1,22 +1,27 @@
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-p2p/amule/amule-2.2.4.ebuild,v 1.1 2009/04/10 14:23:03 armin76 Exp $
+# $Header: $
 
 EAPI="2"
 
 inherit eutils flag-o-matic wxwidgets
 
-MY_P=${PN/m/M}-${PV}
-S="${WORKDIR}"/${MY_P}
+# bleeding-edge development
+MY_P="aMule-SVN-r${PV}"
+# 2_2_X branch, currently unavailable
+# MY_P="aMule-SVN-r${PV}-RELEASE-2_2_X"
+
+S="${WORKDIR}/${MY_P}"
 
 DESCRIPTION="aMule, the all-platform eMule p2p client"
 HOMEPAGE="http://www.amule.org/"
-SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
-
+SRC_URI="http://amule.sourceforge.net/tarballs/${MY_P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~hppa ~ppc ~ppc64 ~sparc ~x86"
-IUSE="daemon debug geoip gtk nls remote stats unicode upnp"
+IUSE="daemon debug geoip gtk nls remote stats unicode upnp xchat"
+
+RESTRICT="nomirror"
 
 DEPEND="=x11-libs/wxGTK-2.8*
 	>=dev-libs/crypto++-5.5.2
@@ -26,6 +31,11 @@ DEPEND="=x11-libs/wxGTK-2.8*
 	upnp? ( >=net-libs/libupnp-1.6.6 )
 	remote? ( >=media-libs/libpng-1.2.0
 	unicode? ( >=media-libs/gd-2.0.26 ) )"
+
+RDEPEND="$DEPEND
+	xchat? ( net-irc/xchat[perl] )"
+
+S="${WORKDIR}/amule"
 
 pkg_setup() {
 	if ! use gtk && ! use remote && ! use daemon; then
@@ -89,6 +99,7 @@ src_configure() {
 		$(use_enable remote webserver) \
 		$(use_enable stats cas) \
 		$(use_enable stats alcc) \
+		$(use_enable xchat xas) \
 		${myconf} || die
 }
 
@@ -104,3 +115,4 @@ src_install() {
 		newinitd "${FILESDIR}"/amuleweb.initd amuleweb
 	fi
 }
+
