@@ -9,8 +9,7 @@ inherit flag-o-matic eutils toolchain-funcs multilib perl-app gnome2 autotools
 
 DESCRIPTION="GTK Instant Messenger client"
 HOMEPAGE="http://pidgin.im/"
-SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2
-	mirror://gentoo/pidgin-2.7.0-mtn20100526.patch.bz2"
+SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -105,12 +104,6 @@ pkg_setup() {
 		elog "to monitor idle/active status based on mouse/keyboard events"
 	fi
 }
-
-#src_prepare() {
-	# Fixes from upstream as of 20100526
-	#epatch "${WORKDIR}/pidgin-2.7.0-mtn20100526.patch"
-	#eautoreconf
-#}
 
 src_configure() {
 	# Stabilize things, for your own good
