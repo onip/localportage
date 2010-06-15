@@ -16,7 +16,7 @@ KEYWORDS="amd64 ppc x86"
 IUSE=""
 
 RDEPEND=">=dev-lang/mono-2.0
-	x11-libs/gtksourceview:1.0"
+	dev-dotnet/gtksourceview-sharp:1"
 DEPEND="${RDEPEND}
 	x11-misc/shared-mime-info
 	app-arch/unzip
