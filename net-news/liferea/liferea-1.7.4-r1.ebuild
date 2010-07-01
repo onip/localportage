@@ -25,7 +25,7 @@ RDEPEND=">=x11-libs/gtk+-2.18.0:2
 	>=dev-libs/libxml2-2.6.27
 	>=dev-libs/libxslt-1.1.19
 	>=dev-db/sqlite-3.6.10:3
-	>=net-libs/libsoup-2.28.2:2.4
+	>=net-libs/libsoup-2.30.2-r1
 	>=net-libs/webkit-gtk-1.1.11
 	libnotify? ( >=x11-libs/libnotify-0.3.2 )
 	dbus? ( >=dev-libs/dbus-glib-0.71 )
