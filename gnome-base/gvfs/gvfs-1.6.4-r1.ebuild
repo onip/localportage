@@ -81,7 +81,7 @@ src_prepare() {
 	gnome2_src_prepare
 
 	# sftp timeout patch
-	epatch "${FILESDIR}/git_backout_sftp_commit_c6be45c.patch"
+	epatch "${FILESDIR}/${P}-sftp-fix-poll-timeout.patch"
 
 	# Conditional patching purely to avoid eautoreconf
 	use gphoto2 && epatch "${FILESDIR}/${PN}-1.2.2-gphoto2-stricter-checks.patch"
