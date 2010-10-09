@@ -27,14 +27,6 @@ RDEPEND="!!=dev-lang/mono-2.2
 DEPEND="${RDEPEND}
 	!dev-lang/mercury"
 
-#src_prepare() {
-#	go-mono_src_prepare
-#
-#	epatch "${FILESDIR}/${PN}-2.6-system-bfd.patch"
-#
-#	eautoreconf
-#}
-
 src_configure() {
 	# Let's go for extra safety to avoid runtime errors, until
 	# upstream applies it.
