@@ -1,21 +1,17 @@
-diff -NrU5 mono-tools-2.4.2.orig/configure.in mono-tools-2.4.2/configure.in
---- mono-tools-2.4.2.orig/configure.in	2009-09-02 13:49:47.000000000 +0200
-+++ mono-tools-2.4.2/configure.in	2009-09-02 14:14:04.000000000 +0200
-@@ -43,54 +43,84 @@
- 
- PKG_CHECK_MODULES(GTK_SHARP, gtk-sharp-2.0 glade-sharp-2.0 gnome-sharp-2.0 gconf-sharp-2.0)
- #PKG_CHECK_MODULES(GTK_SHARP, gtk-sharp glade-sharp gconf-sharp)
- AC_SUBST(GTK_SHARP_LIBS)
+--- configure.in.old	2010-10-09 16:52:09.859675267 +0200
++++ configure.in	2010-10-09 17:01:01.043434596 +0200
+@@ -62,50 +62,80 @@
+ AC_SUBST(GNOME_SHARP_LIBS)
+ AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_gnome" = "xyes")
  
 -PKG_CHECK_MODULES(GTKHTML_SHARP, gtkhtml-sharp-3.14, enable_gtkhtml=yes, enable_gtkhtml=no)
 -if test "x$enable_gtkhtml" = "xyes"; then
--CSHARP_FLAGS="-d:GTKHTML_SHARP_3_14"
+-	CSHARP_FLAGS="-d:GTKHTML_SHARP_3_14 $CSHARP_FLAGS"
 -else
--PKG_CHECK_MODULES(GTKHTML_SHARP, gtkhtml-sharp-2.0, enable_gtkhtml=yes, enable_gtkhtml=no)
--CSHARP_FLAGS=
+-	PKG_CHECK_MODULES(GTKHTML_SHARP, gtkhtml-sharp-2.0, enable_gtkhtml=yes, enable_gtkhtml=no)
 +AC_ARG_ENABLE(gtkhtml,
-+		AC_HELP_STRING([--enable-gtkhtml], [Use GTKHTML Browser]),,
-+		enable_gtkhtml=yes)
++	      AC_HELP_STRING([--enable-gtkhtml], [Use GTKHTML Browser]),,
++	      enable_gtkhtml=yes)
 +
 +if test "x$enable_gtkhtml" = "xyes" ; then
 +	PKG_CHECK_MODULES([GTKHTML_SHARP],
@@ -32,12 +28,10 @@ diff -NrU5 mono-tools-2.4.2.orig/configure.in mono-tools-2.4.2/configure.in
 +       AC_SUBST(CSHARP_FLAGS)
  fi
 -AC_SUBST(GTKHTML_SHARP_LIBS)
--AC_SUBST(CSHARP_FLAGS)
 +
  AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
  
--PKG_CHECK_MODULES(GECKO_SHARP, gecko-sharp-2.0, enable_gecko=yes, enable_gecko=no)
--AC_SUBST(GECKO_SHARP_LIBS)
+-AC_SUBST(CSHARP_FLAGS)
 +AC_ARG_ENABLE(gecko,
 +             AC_HELP_STRING([--enable-gecko], [Use Gecko / Xulrunner-1.8 browser libs]),,
 +             enable_gecko=yes)
@@ -51,7 +45,9 @@ diff -NrU5 mono-tools-2.4.2.orig/configure.in mono-tools-2.4.2/configure.in
 +       MOZILLA_HOME="`$PKG_CONFIG --variable=libdir mozilla-gtkmozembed`"
 +       AC_SUBST(MOZILLA_HOME)
 +fi
-+
+ 
+-PKG_CHECK_MODULES(GECKO_SHARP, gecko-sharp-2.0, enable_gecko=yes, enable_gecko=no)
+-AC_SUBST(GECKO_SHARP_LIBS)
  AM_CONDITIONAL(ENABLE_GECKO, test "x$enable_gecko" = "xyes")
  
 -if test "x$enable_gecko" = "xyes"; then
@@ -91,12 +87,12 @@ diff -NrU5 mono-tools-2.4.2.orig/configure.in mono-tools-2.4.2/configure.in
  	then
 -		AC_MSG_RESULT([yes])
 -		enable_monowebbrowser=yes
-+	   	AC_MSG_RESULT([no])
-+		if test "x$enable_monowebbrowser" = "x" ; then enable_monowebbrowser=no ; fi
- 	else
--		AC_MSG_RESULT([no])
+-	else
+ 		AC_MSG_RESULT([no])
 -		enable_monowebbrowser=no
 -	fi  
++		if test "x$enable_monowebbrowser" = "x" ; then enable_monowebbrowser=no ; fi
++	else
 +		if $GACUTIL -l Mono.WebBrowser | grep -q "Mono.WebBrowser"
 +		then
 +			AC_MSG_RESULT([yes])
@@ -113,5 +109,3 @@ diff -NrU5 mono-tools-2.4.2.orig/configure.in mono-tools-2.4.2/configure.in
  AM_CONDITIONAL(ENABLE_MONOWEBBROWSER, test "x$enable_monowebbrowser" = "xyes")
  
  if test "x$enable_gtkhtml$enable_gecko$enable_monowebbrowser$enable_webkit" = "xnononono" ; then
-    AC_MSG_ERROR([no HTML display found. You need either gtkhtml, gecko, WebKit or Mono.WebBrowser])
- fi

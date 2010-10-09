@@ -26,7 +26,7 @@ DEPEND="${RDEPEND}
 	sys-devel/gettext
 	>=dev-util/pkgconfig-0.19"
 
-PATCHES=( "${FILESDIR}/${PN}-2.4-html-renderer-fixes.patch" )
+PATCHES=( "${FILESDIR}/${P}-html-renderer-fixes.patch" )
 
 #Fails parallel make.
 MAKEOPTS="${MAKEOPTS} -j1"
@@ -41,6 +41,8 @@ pkg_setup() {
 src_prepare() {
 	glib-gettextize --force --copy || die "glib-gettextize --force --copy failed"
 	go-mono_src_prepare
+
+	eautoreconf
 }
 
 src_configure() {
