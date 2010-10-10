@@ -1,0 +1,26 @@
+# Copyright 1999-2010 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo-x86/dev-dotnet/gluezilla/gluezilla-2.6.ebuild,v 1.4 2010/09/12 04:25:32 josejx Exp $
+
+EAPI=2
+
+inherit mono autotools
+
+SRC_URI="http://ftp.novell.com/pub/mono/sources/${PN}/${P}.tar.bz2"
+DESCRIPTION="A simple library to embed Gecko (xulrunner) in the Mono Winforms WebControl"
+HOMEPAGE="http://mono-project.com/Gluezilla"
+
+LICENSE="LGPL-2 MPL-1.1"
+KEYWORDS="amd64 ppc x86"
+SLOT="0"
+IUSE=""
+
+RDEPEND=">=dev-lang/mono-2.6
+	net-libs/xulrunner:1.9
+	x11-libs/gtk+:2"
+DEPEND="${RDEPEND}"
+
+src_prepare() {
+	epatch "${FILESDIR}/${P}-fix-xulrunner-detection.patch" || die "Failed to patch"
+	eautoreconf
+}
