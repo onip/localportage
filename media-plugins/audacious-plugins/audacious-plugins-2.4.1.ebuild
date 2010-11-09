@@ -13,13 +13,13 @@ SRC_URI="http://distfiles.atheme.org/${MY_P}.tgz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~hppa ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~x86-interix ~amd64-linux ~x86-linux"
-IUSE="aac adplug alsa aqua bs2b cdda cue debug ffmpeg flac fluidsynth gnome ipv6 jack
+IUSE="aac adplug alsa aqua bs2b cdda cue ffmpeg flac fluidsynth gnome ipv6 jack
 lame lirc midi mms mp3 mtp nls oss pulseaudio scrobbler sdl sid sndfile sse2 vorbis wavpack"
 
 RDEPEND="app-arch/unzip
 	>=dev-libs/dbus-glib-0.60
 	dev-libs/libxml2
-	>=media-sound/audacious-2.4.0
+	>=media-sound/audacious-2.4.1
 	>=net-libs/neon-0.26.4
 	>=x11-libs/gtk+-2.14
 	aac? ( >=media-libs/faad2-2.7 )
@@ -79,7 +79,6 @@ src_compile() {
 		$(use_enable bs2b) \
 		$(use_enable cdda cdaudio) \
 		$(use_enable cue) \
-		$(use_enable debug) \
 		$(use_enable ffmpeg ffaudio) \
 		$(use_enable flac flacng) \
 		$(use_enable fluidsynth amidiplug-flsyn) \
