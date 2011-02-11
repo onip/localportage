@@ -1,0 +1,91 @@
+# Description: Use GIO to get file paths instead of GnomeVFS
+# Origin: vendor
+# Author: Andreas Henriksson <andreas@fatal.se>
+# Reviewed-By: Chow Loong Jin <hyperair@ubuntu.com>
+# Forwarded: yes
+---
+
+ src/nautilus-share.c |   21 ++++++++++++++-------
+ 1 files changed, 14 insertions(+), 7 deletions(-)
+
+
+Index: nautilus-share/src/nautilus-share.c
+===================================================================
+--- nautilus-share.orig/src/nautilus-share.c	2010-11-05 14:22:53.000000000 -0400
++++ nautilus-share/src/nautilus-share.c	2010-11-05 14:23:23.885607003 -0400
+@@ -31,11 +31,12 @@
+ #include <libnautilus-extension/nautilus-menu-provider.h>
+ #include <libnautilus-extension/nautilus-property-page-provider.h>
+ 
+-#include <libgnomevfs/gnome-vfs-utils.h>
+ #include "nautilus-share.h"
+ 
+ #include <glib/gi18n-lib.h>
+ 
++#include <gio/gio.h>
++
+ #include <gtk/gtktable.h>
+ #include <gtk/gtkvbox.h>
+ #include <gtk/gtkhbox.h>
+@@ -51,6 +52,8 @@
+ #include <string.h>
+ #include <time.h>
+ 
++#include <sys/types.h>
++#include <sys/stat.h>
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <sys/wait.h>
+@@ -423,15 +426,15 @@
+ static gchar *
+ get_fullpath_from_fileinfo(NautilusFileInfo *fileinfo)
+ {
+-  gchar *uri;
++  GFile *file;
+   gchar *fullpath;
+ 
+   g_assert (fileinfo != NULL);
+   
+-  uri = nautilus_file_info_get_uri(fileinfo);
+-  fullpath = gnome_vfs_get_local_path_from_uri(uri);
+-  g_assert (fullpath != NULL); /* In the beginning we checked that this was a local URI */
+-  g_free(uri);
++  file = nautilus_file_info_get_location(fileinfo);
++  fullpath = g_file_get_path(file);
++  g_assert (fullpath != NULL && g_file_is_native(file)); /* In the beginning we checked that this was a local URI */
++  g_object_unref(file);
+ 
+   return(fullpath);
+ }
+@@ -1139,11 +1142,13 @@
+ {
+   char		*uri;
+   char		*local_path = NULL;
++  GFile         *f;
+ 
+   *share_info = NULL;
+   *is_shareable = FALSE;
+ 
+   uri = nautilus_file_info_get_uri (file);
++  f = nautilus_file_info_get_location(file);
+   if (!uri)
+     goto out;
+ 
+@@ -1172,7 +1177,8 @@
+   if (!nautilus_file_info_is_directory(file))
+     goto out;
+ 
+-  if(!(local_path = gnome_vfs_get_local_path_from_uri(uri)))
++  local_path = g_file_get_path(f);
++  if (!local_path || !g_file_is_native(f))
+     goto out;
+ 
+   /* FIXME: NULL GError */
+@@ -1183,6 +1189,7 @@
+ 
+  out:
+ 
++  g_object_unref(f);
+   g_free (uri);
+   g_free (local_path);
+ }

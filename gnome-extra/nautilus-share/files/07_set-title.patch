@@ -1,0 +1,24 @@
+# Description: Set the title of the sharing options dialog manually so it can
+# be translated.
+# Origin: vendor
+# Bug-Ubuntu: https://bugs.launchpad.net/bugs/356191
+# Forwarded: yes
+# Author: Chow Loong Jin <hyperair@ubuntu.com>
+---
+
+ src/nautilus-share.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+
+diff --git a/src/nautilus-share.c b/src/nautilus-share.c
+index 0944214..0616965 100644
+--- a/src/nautilus-share.c
++++ b/src/nautilus-share.c
+@@ -1363,6 +1363,7 @@ share_this_folder_callback (NautilusMenuItem *item,
+   g_assert (fileinfo != NULL);
+ 
+   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
++  gtk_window_set_title (GTK_WINDOW (window), _("Folder Sharing"));
+   page = create_property_page (fileinfo);
+   page->standalone_window = window;
+   g_signal_connect (page->button_cancel, "clicked",

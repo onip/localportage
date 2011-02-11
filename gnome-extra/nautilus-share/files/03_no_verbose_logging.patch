@@ -1,0 +1,169 @@
+# Description: Don't print status messages in session log
+# Origin: vendor
+# Bug-Ubuntu: https://bugs.launchpad.net/bugs/335867
+# Forwarded: yes
+# Author: Sebastien Bacher <seb128@canonical.com>
+# Reviewed-By: Chow Loong Jin <hyperair@ubuntu.com>
+---
+
+ src/nautilus-share.c |    4 ++--
+ src/shares.c         |   30 +++++++++++++++---------------
+ 2 files changed, 17 insertions(+), 17 deletions(-)
+
+
+diff --git a/src/nautilus-share.c b/src/nautilus-share.c
+index d96edef..be4dfd9 100644
+--- a/src/nautilus-share.c
++++ b/src/nautilus-share.c
+@@ -1508,7 +1508,7 @@ nautilus_share_register_type (GTypeModule *module)
+ void
+ nautilus_module_initialize (GTypeModule  *module)
+ {
+-  g_print ("Initializing nautilus-share extension\n");
++  /*g_print ("Initializing nautilus-share extension\n");*/
+ 
+   bindtextdomain("nautilus-share", NAUTILUS_SHARE_LOCALEDIR);
+   bind_textdomain_codeset("nautilus-share", "UTF-8");
+@@ -1520,7 +1520,7 @@ nautilus_module_initialize (GTypeModule  *module)
+ void
+ nautilus_module_shutdown   (void)
+ {
+-  g_print ("Shutting down nautilus-share extension\n");
++  /*g_print ("Shutting down nautilus-share extension\n");*/
+   /* FIXME freeing */
+ }
+ 
+diff --git a/src/shares.c b/src/shares.c
+index 6a869b9..ddec01b 100644
+--- a/src/shares.c
++++ b/src/shares.c
+@@ -78,7 +78,7 @@ net_usershare_run (int argc, char **argv, GKeyFile **ret_key_file, GError **erro
+ 
+ 	stdout_contents = NULL;
+ 	stderr_contents = NULL;
+-
++	/*
+ 	{
+ 		char **p;
+ 
+@@ -89,7 +89,7 @@ net_usershare_run (int argc, char **argv, GKeyFile **ret_key_file, GError **erro
+ 
+ 		g_message ("end of spawn args; SPAWNING\n");
+ 	}
+-
++	*/
+ 	real_error = NULL;
+ 	retval = g_spawn_sync (NULL,			/* cwd */
+ 			       real_argv,
+@@ -102,7 +102,7 @@ net_usershare_run (int argc, char **argv, GKeyFile **ret_key_file, GError **erro
+ 			       &exit_status,
+ 			       &real_error);
+ 
+-	g_message ("returned from spawn: %s: %s", retval ? "SUCCESS" : "FAIL", retval ? "" : real_error->message);
++	/* g_message ("returned from spawn: %s: %s", retval ? "SUCCESS" : "FAIL", retval ? "" : real_error->message); */
+ 
+ 	if (!retval) {
+ 		g_propagate_error (error, real_error);
+@@ -141,7 +141,7 @@ net_usershare_run (int argc, char **argv, GKeyFile **ret_key_file, GError **erro
+ 
+ 	exit_code = WEXITSTATUS (exit_status);
+ 
+-	g_message ("exit code %d", exit_code);
++	/* g_message ("exit code %d", exit_code); */
+ 	if (exit_code != 0) {
+ 		char *str;
+ 		char *message;
+@@ -170,7 +170,7 @@ net_usershare_run (int argc, char **argv, GKeyFile **ret_key_file, GError **erro
+ 	}
+ 
+ 	if (ret_key_file) {
+-		g_message ("caller wants GKeyFile");
++	  /* g_message ("caller wants GKeyFile"); */
+ 
+ 		*ret_key_file = NULL;
+ 
+@@ -205,14 +205,14 @@ net_usershare_run (int argc, char **argv, GKeyFile **ret_key_file, GError **erro
+ 	} else
+ 		retval = TRUE;
+ 
+-	g_message ("success from calling net usershare and parsing its output");
++	/* g_message ("success from calling net usershare and parsing its output"); */
+ 
+  out:
+ 	g_free (real_argv);
+ 	g_free (stdout_contents);
+ 	g_free (stderr_contents);
+ 
+-	g_message ("------------------------------------------");
++	/* g_message ("------------------------------------------"); */
+ 
+ 	return retval;
+ }
+@@ -472,7 +472,7 @@ refresh_if_needed (GError **error)
+ 
+ 		new_timestamp = time (NULL);
+ 		if (new_timestamp - refresh_timestamp > TIMESTAMP_THRESHOLD) {
+-			g_message ("REFRESHING SHARES");
++		  /* g_message ("REFRESHING SHARES"); */
+ 			retval = refresh_shares (error);
+ 		} else
+ 			retval = TRUE;
+@@ -606,7 +606,7 @@ add_share (ShareInfo *info, GError **error)
+ 	gboolean supports_success;
+ 	gboolean supports_guest_ok;
+ 
+-	g_message ("add_share() start");
++	/*	g_message ("add_share() start"); */
+ 
+ 	if (throw_error_on_add) {
+ 		g_set_error (error,
+@@ -646,7 +646,7 @@ add_share (ShareInfo *info, GError **error)
+ 	copy = copy_share_info (info);
+ 	add_share_info_to_hashes (copy);
+ 
+-	g_message ("add_share() end SUCCESS");
++	/* g_message ("add_share() end SUCCESS"); */
+ 
+ 	return TRUE;
+ }
+@@ -658,7 +658,7 @@ remove_share (const char *path, GError **error)
+ 	char *argv[2];
+ 	GError *real_error;
+ 
+-	g_message ("remove_share() start");
++	/* g_message ("remove_share() start"); */
+ 
+ 	if (throw_error_on_remove) {
+ 		g_set_error (error,
+@@ -699,7 +699,7 @@ remove_share (const char *path, GError **error)
+ 	remove_share_info_from_hashes (old_info);
+ 	shares_free_share_info (old_info);
+ 
+-	g_message ("remove_share() end SUCCESS");
++	/* g_message ("remove_share() end SUCCESS"); */
+ 
+ 	return TRUE;
+ }
+@@ -709,11 +709,11 @@ modify_share (const char *old_path, ShareInfo *info, GError **error)
+ {
+ 	ShareInfo *old_info;
+ 
+-	g_message ("modify_share() start");
++ 	/* g_message ("modify_share() start"); */
+ 
+ 	old_info = lookup_share_by_path (old_path);
+ 	if (old_info == NULL) {
+-		g_message ("modify_share() end; calling add_share() instead");
++	  /*g_message ("modify_share() end; calling add_share() instead");*/
+ 		return add_share (info, error);
+ 	}
+ 
+@@ -748,7 +748,7 @@ modify_share (const char *old_path, ShareInfo *info, GError **error)
+ 		return FALSE;
+ 	}
+ 
+-	g_message ("modify_share() end: will call add_share() with the new share info");
++	/* g_message ("modify_share() end: will call add_share() with the new share info"); */
+ 	return add_share (info, error);
+ }
+ 

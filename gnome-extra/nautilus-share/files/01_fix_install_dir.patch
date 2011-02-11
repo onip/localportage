@@ -1,0 +1,42 @@
+# Description: Fix installation directory of nautilus-share (grab from
+#  pkg-config)
+# Origin: vendor
+# Forwarded: yes
+# Bug-Debian: http://bugs.debian.org/475230
+# Author: by Michael Vogt <mvo@ubuntu.com>
+# Reviewed-By: Chow Loong Jin <hyperair@ubuntu.com>
+---
+
+ src/Makefile.am |    3 +--
+ src/Makefile.in |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index b30913c..29f26fe 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -10,8 +10,7 @@ libnautilus_share_la_CFLAGS =				\
+ 	$(LIBGLADE_CFLAGS)				\
+ 	$(GLIB_CFLAGS)
+ 
+-# FIXME: get this from the .pc file
+-nautilus_extensiondir=$(libdir)/nautilus/extensions-1.0
++nautilus_extensiondir = $(shell $(PKG_CONFIG) --variable=extensiondir libnautilus-extension)
+ 
+ nautilus_extension_LTLIBRARIES=libnautilus-share.la
+ 
+diff --git a/src/Makefile.in b/src/Makefile.in
+index 1404b39..88bfb10 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -244,8 +244,7 @@ libnautilus_share_la_CFLAGS = \
+ 	$(GLIB_CFLAGS)
+ 
+ 
+-# FIXME: get this from the .pc file
+-nautilus_extensiondir = $(libdir)/nautilus/extensions-1.0
++nautilus_extensiondir = $(shell $(PKG_CONFIG) --variable=extensiondir libnautilus-extension)
+ nautilus_extension_LTLIBRARIES = libnautilus-share.la
+ libnautilus_share_la_SOURCES = \
+ 	nautilus-share.c        \

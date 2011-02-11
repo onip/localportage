@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit gnome2 eutils
+inherit gnome2 eutils autotools
 
 DESCRIPTION="A nautilus plugin to easily share folders over the SMB protocol"
 HOMEPAGE="http://gentoo.ovibes.net/nautilus-share"
@@ -13,8 +13,7 @@ SLOT="0"
 LICENSE="GPL-2"
 KEYWORDS="~x86"
 
-DEPEND=">=gnome-base/nautilus-2.22.0
-	>=gnome-base/eel-2.10.0
+DEPEND=">=gnome-base/nautilus-2.32.0
 	>=dev-libs/glib-2.4.0
 	>=gnome-base/libglade-2.4.0"
 RDEPEND="${DEPEND}
@@ -27,7 +26,24 @@ USERSHARES_GROUP="samba"
 
 src_unpack() {
 	gnome2_src_unpack
-	epatch "${FILESDIR}/nautilus-2.22.patch"
+	epatch "${FILESDIR}/01_fix_install_dir.patch"
+	epatch "${FILESDIR}/02_install_missing_samba.patch"
+	epatch "${FILESDIR}/03_no_verbose_logging.patch"
+	epatch "${FILESDIR}/04_use_correct_icon.patch"
+	epatch "${FILESDIR}/05_dependencies.patch"
+	epatch "${FILESDIR}/06_fix-validation.patch"
+	epatch "${FILESDIR}/07_set-title.patch"
+	epatch "${FILESDIR}/08_change-confusing-wording.patch"
+	epatch "${FILESDIR}/09_change-comments-location.patch"
+	epatch "${FILESDIR}/10_fix-writable-detection.patch"
+	epatch "${FILESDIR}/11_use-gio.patch"
+	epatch "${FILESDIR}/12_undoable-action.patch"
+	epatch "${FILESDIR}/13_permissions.patch"
+	epatch "${FILESDIR}/14_glade-to-gtkbuilder.patch"
+	epatch "${FILESDIR}/15_user-acl.patch"
+	#epatch "${FILESDIR}/99_ltmain_as-needed.patch"
+
+	eautoreconf
 }
 
 src_install() {
