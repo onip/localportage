@@ -58,8 +58,8 @@ RDEPEND=">=dev-lang/mono-2.4.3
 		)
 	)
 	media-libs/musicbrainz:1
-	>=dev-dotnet/dbus-glib-sharp-0.4.1
-	>=dev-dotnet/dbus-sharp-0.6.1a
+	>=dev-dotnet/ndesk-dbus-glib-0.4.1
+	>=dev-dotnet/ndesk-dbus-0.6.1a
 	>=dev-dotnet/mono-addins-0.4[gtk]
 	>=dev-dotnet/taglib-sharp-2.0.3.7
 	>=dev-db/sqlite-3.4
