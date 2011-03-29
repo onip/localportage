@@ -40,6 +40,7 @@ S="${WORKDIR}/${MY_P}"
 
 src_prepare() {
 	epatch "${FILESDIR}/google-reader-auth.patch"
+	epatch "${FILESDIR}/liferea-1.7.4-libnotify-0.7.patch"
 }
 pkg_setup() {
 	G2CONF="${G2CONF}
