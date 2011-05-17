@@ -23,7 +23,7 @@ IUSE="daemon debug geoip gtk nls remote stats unicode upnp xchat"
 
 RESTRICT="nomirror"
 
-DEPEND="=x11-libs/wxGTK-2.8*
+DEPEND=">=x11-libs/wxGTK-2.8.12.0
 	>=dev-libs/crypto++-5.5.2
 	>=sys-libs/zlib-1.2.1
 	stats? ( >=media-libs/gd-2.0.26[jpeg] )
