@@ -29,7 +29,6 @@ DOCS="AUTHORS README THANKS TODO TRANSLATORS"
 
 src_prepare() {
 	gnome2_src_prepare
-	epatch "${FILESDIR}"/${P}-libnotify-0.7.patch
 }
 
 pkg_setup() {
