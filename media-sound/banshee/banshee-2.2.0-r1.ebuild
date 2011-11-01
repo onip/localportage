@@ -19,7 +19,7 @@ HOMEPAGE="http://banshee.fm/"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+aac +cdda boo daap doc +encode ipod karma mtp podcast test udev +web youtube"
+IUSE="+aac +cdda boo daap doc +encode ipod karma mtp test udev +web youtube"
 
 RDEPEND=">=dev-lang/mono-2.4.3
 	gnome-base/gnome-settings-daemon
