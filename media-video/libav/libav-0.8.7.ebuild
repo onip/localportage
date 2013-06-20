@@ -70,7 +70,7 @@ RDEPEND="
 	gsm? ( >=media-sound/gsm-1.0.12-r1 )
 	ieee1394? ( media-libs/libdc1394 sys-libs/libraw1394 )
 	jack? ( media-sound/jack-audio-connection-kit )
-	jpeg2k? ( >=media-libs/openjpeg-1.3-r2 )
+	jpeg2k? ( >=media-libs/openjpeg-1.3-r2:0 )
 	pulseaudio? ( media-sound/pulseaudio )
 	rtmp? ( >=media-video/rtmpdump-2.2f )
 	ssl? ( openssl? ( dev-libs/openssl )
