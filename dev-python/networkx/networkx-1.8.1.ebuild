@@ -33,7 +33,7 @@ RDEPEND="
 	examples? (
 		dev-python/matplotlib[${PYTHON_USEDEP}]
 		dev-python/pygraphviz[${PYTHON_USEDEP}]
-		virtual/pyparsing[${PYTHON_USEDEP}]
+		dev-python/pyparsing[${PYTHON_USEDEP}]
 		dev-python/pyyaml[${PYTHON_USEDEP}]
 		sci-libs/scipy[${PYTHON_USEDEP}]
 	)"
